@@ -15,7 +15,7 @@ if (isProduction) {
     pool = new Pool({
         user : 'postgres', 
         host : 'localhost',
-        database : 'SISGEE',
+        database : 'SISGEEPW',
         password : 'postgres',
         port : 5432
     })

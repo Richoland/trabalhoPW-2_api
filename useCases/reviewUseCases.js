@@ -4,14 +4,14 @@ const Review = require('../entities/review')
 const getReviewsDB = async () => {
     try {
         const { rows } = await 
-        pool.query(`SELECT r.codigo AS codigo, r.numero AS numero, 
-        r.descricao AS descricao, r.capacidade AS capacidade, 
-        r.predio AS predio, p.nome AS nomepredio
+        pool.query(`SELECT r.codigo AS codigo, r.nota AS nota, 
+        r.descricao AS descricao, 
+        r.serie AS serie, p.nome AS nomeserie
         FROM reviews r 
-        JOIN predios p ON p.codigo = r.predio
+        JOIN series p ON p.codigo = r.serie
         ORDER BY r.codigo`);
-        return rows.map((review) => new Review(review.codigo, review.numero,
-           review.descricao, review.capacidade, review.predio , review.nomepredio));
+        return rows.map((review) => new Review(review.codigo, review.nota,
+           review.descricao, review.serie , review.nomeserie));
     } catch(err){
         throw "Erro: " + err;
     }
@@ -19,14 +19,14 @@ const getReviewsDB = async () => {
 
 const addReviewDB = async (body) => {
     try {
-        const { numero, descricao, capacidade, predio } = body;
-        const results = await pool.query(`INSERT INTO reviews (numero, descricao,
-            capacidade, predio) VALUES ($1, $2, $3, $4) 
-            RETURNING codigo, numero, descricao, capacidade, predio`, 
-            [numero, descricao, capacidade, predio]);
+        const { nota, descricao, serie } = body;
+        const results = await pool.query(`INSERT INTO reviews (nota, descricao,
+             serie) VALUES ($1, $2, $3) 
+            RETURNING codigo, nota, descricao, serie`, 
+            [nota, descricao, serie]);
         const review = results.rows[0];
-        return new Review(review.codigo, review.numero,
-            review.descricao, review.capacidade, review.predio , "");
+        return new Review(review.codigo, review.nota,
+            review.descricao, review.serie , "");
     } catch (err){
         throw "Erro ao inserir a review: " + err;
     }
@@ -34,18 +34,18 @@ const addReviewDB = async (body) => {
 
 const updateReviewDB = async (body) => {
     try {
-        const { codigo, numero, descricao, capacidade, predio } = body;
-        const results = await pool.query(`UPDATE reviews SET numero=$1,
-        descricao=$2, capacidade = $3, predio = $4 WHERE codigo=$5 
-        RETURNING codigo, numero, descricao, capacidade, predio`, 
-            [numero, descricao, capacidade, predio, codigo]);
+        const { codigo, nota, descricao, serie } = body;
+        const results = await pool.query(`UPDATE reviews SET nota=$1,
+        descricao=$2, serie=$3 WHERE codigo=$4 
+        RETURNING codigo, nota, descricao, serie`, 
+            [nota, descricao, serie, codigo]);
         if (results.rowCount == 0){
             throw `Nenhum registro encontrado com o código ${codigo} para
             ser alterado`
         }
         const review = results.rows[0];
-        return new Review(review.codigo, review.numero,
-            review.descricao, review.capacidade, review.predio , "");        
+        return new Review(review.codigo, review.nota,
+            review.descricao, review.serie , "");        
     } catch (err){
         throw "Erro ao alterar review: " + err;
     }
@@ -74,8 +74,8 @@ const getReviewPorCodigoDB = async (codigo) => {
             throw `Nenhum registro encontrado com o código ${codigo}`
         } else {
             const review = results.rows[0];
-            return new Review(review.codigo, review.numero,
-                review.descricao, review.capacidade, review.predio , "");  
+            return new Review(review.codigo, review.nota,
+                review.descricao, review.serie , "");  
         }
     } catch (err){
         throw "Erro ao recuperar a review: " + err;

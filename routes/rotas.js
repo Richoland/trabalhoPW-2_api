@@ -6,9 +6,9 @@ const { getSeries, addSerie, updateSerie,
 const { getReviews, addReview, updateReview, deleteReview, getReviewPorCodigo }
      = require('../controllers/reviewController');
 
-const { getEquipamentoPorReview, addEquipamento, updateEquipamento,
-     deleteEquipamento, getEquipamentoPorCodigo } =
-     require('../controllers/equipamentosController');
+const { getComentarioPorReview, addComentario, updateComentario,
+     deleteComentario, getComentarioPorCodigo } =
+     require('../controllers/comentariosController');
 
 const { login , verificaJWT } = require('../controllers/segurancaController');
 
@@ -35,15 +35,15 @@ rotas.route('/reviews/:codigo')
      .get(verificaJWT, getReviewPorCodigo)
      .delete(verificaJWT, deleteReview);
 
-rotas.route('/equipamentos/review/:codigoreview')
-     .get(verificaJWT, getEquipamentoPorReview)
+rotas.route('/comentarios/review/:codigoreview')
+     .get(verificaJWT, getComentarioPorReview)
+ 
+rotas.route('/comentarios')
+     .post(verificaJWT, addComentario)
+     .put(verificaJWT, updateComentario);
 
-rotas.route('/equipamentos')
-     .post(verificaJWT, addEquipamento)
-     .put(verificaJWT, updateEquipamento);
-
-rotas.route('/equipamentos/:codigo')
-     .get(verificaJWT, getEquipamentoPorCodigo)
-     .delete(verificaJWT, deleteEquipamento);     
+rotas.route('/comentarios/:codigo')
+     .get(verificaJWT, getComentarioPorCodigo)
+     .delete(verificaJWT, deleteComentario);     
 
 module.exports = rotas;
