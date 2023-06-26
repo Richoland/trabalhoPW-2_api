@@ -6,9 +6,9 @@ const getReviewsDB = async () => {
         const { rows } = await 
         pool.query(`SELECT r.codigo AS codigo, r.nota AS nota, 
         r.descricao AS descricao, 
-        r.serie AS serie, p.nome AS nomeserie
+        r.serie AS serie, s.nome AS nomeserie
         FROM reviews r 
-        JOIN series p ON p.codigo = r.serie
+        JOIN series s ON s.codigo = r.serie
         ORDER BY r.codigo`);
         return rows.map((review) => new Review(review.codigo, review.nota,
            review.descricao, review.serie , review.nomeserie));

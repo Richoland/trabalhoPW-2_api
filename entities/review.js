@@ -1,11 +1,10 @@
 class Review {
-    constructor(codigo, numero, descricao, capacidade, predio, nomepredio){
+    constructor(codigo, nota, descricao, serie, nomeserie){
         this.codigo = codigo;
-        this.numero = numero;
+        this.nota = nota;
         this.descricao = descricao;
-        this.capacidade = capacidade;
-        this.predio = predio;
-        this.nomepredio = nomepredio;
+        this.serie = serie;
+        this.nomeserie = nomeserie;
     }
 }
 
